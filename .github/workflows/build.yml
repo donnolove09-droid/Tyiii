@@ -1,0 +1,29 @@
+name: Build ASN VOICE iOS ARM64 library
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build iOS ARM64 dylib shell
+        run: |
+          SDK="$(xcrun --sdk iphoneos --show-sdk-path)"
+          xcrun --sdk iphoneos clang \
+            -target arm64-apple-ios15.0 \
+            -isysroot "$SDK" \
+            -O2 -fPIC -dynamiclib \
+            -install_name @rpath/libASNVoice.dylib \
+            -I Sources Sources/ASNVoice.c \
+            -o libASNVoice.dylib
+          file libASNVoice.dylib
+          xcrun --sdk iphoneos nm -gU libASNVoice.dylib
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ASN-VOICE-ios-arm64-shell
+          path: libASNVoice.dylib
