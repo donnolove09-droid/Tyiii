@@ -1,0 +1,12 @@
+*.dSYM/
+DerivedData/
+build/
+*.ipa
+*.mobileprovision
+*.p12
+*.key
+*.pem
+training/datasets/
+Models/**/*.mlmodelc/
+Models/**/*.pth
+Models/**/*.index
